@@ -1,0 +1,33 @@
+/* ------ reseteo navegador ---------------*/
+* {
+    margin: 0;
+    padding: 0;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+  }
+  
+  html {
+    line-height: 1.15;
+    /* 1 */
+    -webkit-text-size-adjust: 100%;
+    /* 2 */
+  }
+  
+  /* Sections
+       ========================================================================== */
+  /**
+     * Remove the margin in all browsers.
+     */
+  body {
+    margin: 0;
+  }
+
+  #colorBrown {
+    color: #7a3608;
+    text-decoration: none;
+  }
+
+  #colorGreen {
+    color: #20b113;
+    font-style: italic;
+  }

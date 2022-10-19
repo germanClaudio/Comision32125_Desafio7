@@ -1,0 +1,62 @@
+[
+  {
+    "title": "Perfume Champions",
+    "price": 125,
+    "thumbnail": "http://localhost:8080/Perfume_1.jpg",
+    "id": 1
+  },
+  {
+    "title": "Perfume Scandalete",
+    "price": 105,
+    "thumbnail": "http://localhost:8080/Perfume_6.jpg",
+    "id": 2
+  },
+  {
+    "title": "Perfume Te fuiste a la B",
+    "price": 333,
+    "thumbnail": "http://localhost:8080/Perfume_2.jpg",
+    "id": 3
+  },
+  {
+    "title": "Perfume New New York",
+    "price": 123,
+    "thumbnail": "http://localhost:8080/Perfume_4.jpg",
+    "id": 4
+  },
+  {
+    "title": "Perfume Marca Cañon",
+    "price": 189,
+    "thumbnail": "http://localhost:8080/Perfume_5.jpg",
+    "id": 5
+  },
+  {
+    "title": "Perfume Barcelona",
+    "price": 160,
+    "thumbnail": "http://localhost:8080/Perfume_3.jpg",
+    "id": 6
+  },
+  {
+    "title": "Perfume Marca Cañon #3",
+    "price": 150,
+    "thumbnail": "http://localhost:8080/Perfume_1.jpg",
+    "id": 7
+  },
+  {
+    "title": "Perfume LFDAA",
+    "price": 230,
+    "thumbnail": "http://localhost:8080/Perfume_6.jpg",
+    "id": 8
+  },
+  {
+    "title": "Perfume Carlota",
+    "price": 55,
+    "thumbnail": "https://media.vogue.mx/photos/611fceee305f951c22ac94db/master/w_2372,h_3000,c_limit/Voce%20Vita%20de%20Valentino.jpg",
+    "id": 9
+  },
+  {
+    "title": "Perfume Maxime Avon",
+    "price": 90,
+    "thumbnail": "https://staticar.natura.com/cdn/ff/x3IFO-gqdVyrhwSKbye8hMQjk67hS2vbGwg-ZYo1Qhg/1664554454/public/products/102517_1_2.jpg",
+    "id": 10
+  }
+]
