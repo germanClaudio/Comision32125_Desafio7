@@ -22,9 +22,9 @@ const getAllMsg = containerMsg.getAll()
 // const getAllProducts = containerProduct.getAllProd()
 const ContainerProductsMysql = require('./containerProductsMysql.js')
 const containerProduct = new ContainerProductsMysql('productos', knex)
-//const getAllProducts = containerProduct.getAllProds()
+const getAllProducts = containerProduct.getAllProds()
 
-//console.log('GetAllProducts: ' + getAllProducts )
+console.log('GetAllProducts: ' + getAllProducts )
 
 app.use(express.static('public'))
 app.use(express.static('src/images'))
@@ -34,11 +34,11 @@ app.use(express.urlencoded( { extended: true } ))
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/public/views/pages') 
 
-app.get('/', (req, res) => {
+app.get('/', async (req, res) => {
     containerProduct.getAllProds().then( rows => {
-        console.log (rows)
-        if (rows !== 0) {
-            res.render( 'index' , { rows, getAllMsg })  //getAllProducts
+        console.log ('linea 39: '+ JSON.stringify(rows))
+        if (rows !== {}) {
+            res.render( 'index' , { rows , getAllMsg })  //getAllProducts
         } else {
             res.render( 'index' , { message: 'no products'}, getAllMsg )
         }
@@ -75,7 +75,7 @@ io.on('connection', (socket) => {
     })
 
     // Productos --------------------------
-    //socket.emit('productsAll', JSON.stringify(getAllProducts) )   
+    socket.emit('productsAll', JSON.stringify(getAllProducts) )   
 
     socket.on('newProducto', (producto) => {
         console.log('Data servidor: ' + JSON.stringify(producto))
