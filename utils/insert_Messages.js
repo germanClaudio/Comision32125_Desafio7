@@ -1,5 +1,5 @@
 const { optionsqlite } = require('../options/SQLite3')
-const knex = require('knex')(optionsqlite)
+const knex = require('knex')(optionsqlite.sqlite)
 
 const messages = [
     {

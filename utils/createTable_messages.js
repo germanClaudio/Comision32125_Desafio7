@@ -1,5 +1,5 @@
-const { options } = require('../options/SQLite3')
-const knex = require('knex')(options)
+const { optionsqlite } = require('../options/SQLite3')
+const knex = require('knex')(optionsqlite.sqlite)
 
     knex.schema.createTable('messages', table => {
         table.string('user')

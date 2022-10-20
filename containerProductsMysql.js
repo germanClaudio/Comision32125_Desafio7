@@ -25,7 +25,7 @@ module.exports = class ContainerProductsMysql {
 
     async getById(id) {
         try {
-            return await this.knex.from(this.table).select("*").where('id', "=", parseInt(id))
+            return await this.knex.from(this.table).select('*').where('id', "=", parseInt(id))
         } catch (error) {
             return new Error(`Error getting one product ${error}`)
         }

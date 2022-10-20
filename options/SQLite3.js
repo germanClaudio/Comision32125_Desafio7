@@ -2,7 +2,7 @@ const optionsqlite = {
     sqlite: {
         client: 'sqlite3',
         connection: {
-        filename: './mydb.sqlite'
+        filename: '../DB/mydb.sqlite'
         },
         useNullAsDefault: true
     }

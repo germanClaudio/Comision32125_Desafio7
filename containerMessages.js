@@ -3,10 +3,11 @@ const knex = require('knex')(optionsqlite.sqlite)
 
 module.exports = class ContainerMsg {
     constructor(myFile, configConnection) {
+        console.log('file and config:  ' + myFile, configConnection)
         this.myFile = myFile
         this.knex = knex(configConnection)
-        console.log('my file: '+ this.myFile)
-        console.log('my connection: '+ JSON.stringify(configConnection, null, 2))
+        console.log('My file: '+ this.myFile)
+        console.log('My connection: '+ JSON.stringify(configConnection, null, 2))
         // try {
         //     this.messages = this.knex.from(this.myFile).select("*")  //fs.readFileSync(this.myFile, 'utf-8')
         //     this.messages = JSON.parse(this.messages)
@@ -19,8 +20,10 @@ module.exports = class ContainerMsg {
     async getAllMsg() {
         //const fileContent = this.messages
         //return fileContent
+
         try {
             const messages = await this.knex.from(this.myFile).select("*")//.orderBy('id_message', 'ASC')
+            console.log('mensajes: ' + messages)
             return messages
         } catch (error) {
             return new Error(`Error getting all messages ${error}`)
