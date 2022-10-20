@@ -5,26 +5,23 @@ const { Server: IOServer } = require('socket.io')
 
 const app = express()
 
-const { options } = require('./options/connection.js')
-const knex = require('knex')(options)
+const { options } = require('./options/config.js')
+const { optionsqlite } = require('./options/SQLite3.js')
+//const sqlite3 = require('sqlite3')
 
 const httpServer = new HttpServer(app)
 const io = new IOServer(httpServer)
 
 const PORT = 8082
 
-const ContainerMsg = require('./containerMessages')
-const containerMsg = new ContainerMsg('./messages.json')
-const getAllMsg = containerMsg.getAll()
+const ContainerMessages = require('./containerMessages.js')
+const containerMsg = new ContainerMessages( 'messages', optionsqlite.sqlite )
+//const getAllMsg = containerMsg.getAll()
 
-// const ContainerProducts = require('./containerProducts')
-// const containerProduct = new ContainerProducts("./productos.json")
-// const getAllProducts = containerProduct.getAllProd()
 const ContainerProductsMysql = require('./containerProductsMysql.js')
-const containerProduct = new ContainerProductsMysql('productos', knex)
-const getAllProducts = containerProduct.getAllProds()
+const containerProduct = new ContainerProductsMysql( 'productos', options.mysql)
+//const getAllProducts = containerProduct.getAllProds()
 
-console.log('GetAllProducts: ' + getAllProducts )
 
 app.use(express.static('public'))
 app.use(express.static('src/images'))
@@ -34,19 +31,52 @@ app.use(express.urlencoded( { extended: true } ))
 app.set('view engine', 'ejs')
 app.set('views', __dirname + '/public/views/pages') 
 
+
 app.get('/', async (req, res) => {
-    containerProduct.getAllProds().then( rows => {
-        console.log ('linea 39: '+ JSON.stringify(rows))
-        if (rows !== {}) {
-            res.render( 'index' , { rows , getAllMsg })  //getAllProducts
+    try {
+        const productos = await containerProduct.getAllProds()
+        const getAllMsgDB = await containerMsg.getAllMsg()
+        console.log('getAllMsg: '+ getAllMsgDB)
+        if (getAllMsgDB !== {}){
+            res.status(200).json( { data: productos,  msg: getAllMsgDB } )
+            //res.render('index' , { productos, getAllMsg } )
         } else {
-            res.render( 'index' , { message: 'no products'}, getAllMsg )
+            res.status(200).json({msg: 'No products founded' })
         }
-    })
+    } catch (error) {
+        res.status(400).json({msg: 'No products availables' })
+        
+    }
+    }) 
+
+app.get('/:id', async (req, res) => {
+    try {
+        const productos = await containerProduct.getById(parseInt(req.params.id))
+        console.log('Productos: '+productos)
+        if (productos !== []){
+            res.status(200).json( { data: productos })
+        } else {
+            res.status(200).json({msg: 'No products founded' })
+        }
+    } catch (error) {
+        res.status(400).json({msg: 'No products availables' })
+    }
 })
 
-app.get('/historial', (req, res) => {
-    res.render( 'historial', { rows } )  //getAllProducts
+app.get('/historial', async (req, res) => {
+    try {
+        res.status(200).json({data: await containerProduct.getAllProds() })
+    } catch (error) {
+        res.status(400).json({msg: 'No products availables' })
+    }
+})
+
+app.delete('/:id', async (req, res) => {
+    try {
+        res.status(200).json({data: await containerProduct.deleteById(parseInt(req.params.id)) })
+    } catch (error) {
+        res.status(400).json({msg: 'The product was not deleted!!' })
+    }
 })
 
 app.all('*', (req, res) => {
@@ -66,20 +96,19 @@ io.on('connection', (socket) => {
     console.log('Usuario conectado - ID User: ' + socket.id)
     
     // Messages --------------------------
-    socket.emit('mensajesAll', JSON.stringify(getAllMsg))
+    socket.emit('mensajesAll', getAllMsgDB ) //JSON.stringify(getAllMsg))
 
-    socket.on('newMensaje', (message) => {
-       // arrayMens.push(message)
-       const arrayMens = containerMsg.saveMsg(message)
-       io.sockets.emit('mensajesAll', arrayMens)
+    socket.on('newMensaje', async (message) => {
+       containerMsg.saveMsg(message)   //const arrayMens = await containerMsg.saveMsg(message)
+       io.sockets.emit('mensajesAll', await containerMsg.getAllMsg())
     })
 
     // Productos --------------------------
-    socket.emit('productsAll', JSON.stringify(getAllProducts) )   
+    socket.emit('productsAll', containerProduct.getAllProds() )   
 
-    socket.on('newProducto', (producto) => {
+    socket.on('newProducto', async (producto) => {
         console.log('Data servidor: ' + JSON.stringify(producto))
-        const arrayProducts = containerProduct.saveProduct(producto)
+        const arrayProducts = await containerProduct.saveProduct(producto)
         io.sockets.emit('productsAll', arrayProducts)
     })
 

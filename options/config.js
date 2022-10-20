@@ -1,4 +1,5 @@
 const options = {
+    mysql: {
     client: 'mysql',
     connection: {
       host : '127.0.0.1',
@@ -7,8 +8,9 @@ const options = {
       password : '',
       database : 'products'
     }
-  }
 
+  }
+}
   module.exports = {
     options
   }

@@ -1,4 +1,4 @@
-const {options} = require('./options/connection.js')
+const {options} = require('./options/config.js')
 const knex = require('knex')(options)
 
     knex.schema.createTable('productos', table => {

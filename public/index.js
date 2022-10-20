@@ -1,5 +1,5 @@
 const socket = io.connect()
-// console.log('socketIO')
+//console.log('socketIO')
 
 // ----------  Messages ----------------
 socket.on('mensajesAll', (data) => {
@@ -20,11 +20,11 @@ const addMessage = () => {
 }
 
 const render = (data) => {
-    //console.log('render..... ' + JSON.parse(data))
+    console.log('render..... ' + JSON.parse(data))
     const array = JSON.parse(data)
 
     const html = array.map((element) => {
-        // console.log('Dentro del html '+data)
+        console.log('Dentro del html '+data)
         return (`<div class="d-block mx-auto my-1 p-1">
                     <strong class="text-secondary">Msg#${element.id_message} -> </strong>
                     <strong class="fw-bold text-primary">${element.user}</strong>:
@@ -41,9 +41,10 @@ const render = (data) => {
 
 
 // --------------  Products ----------------
-socket.on('productsAll', (arrProd) => {
+socket.on('productsAll', async (arrProd) => {
+    console.log(arrProd)
     // socket.emit('respuesta', { socketID: data.id, mensaje: data } )
-    renderProduct(arrProd)
+    renderProduct( await arrProd)
 })
 
 const addProduct = () => {
