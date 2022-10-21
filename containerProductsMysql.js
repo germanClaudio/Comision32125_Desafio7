@@ -2,14 +2,14 @@ const { options } = require('./options/config')
 const knex = require('knex')(options.mysql)
 
 module.exports = class ContainerProductsMysql {
-    constructor(table, configConnection) {
+    constructor(table, { configConnection }) {
         this.table = table
         this.knex = knex(configConnection)
     }
    
     async getAllProds() {
         try {
-            return await this.knex.from(this.table).select("*").orderBy('id', 'ASC')
+            return await this.knex.from(this.table).select("*")
         } catch (error) {
             return new Error(`Error getting all products ${error}`)
         }
